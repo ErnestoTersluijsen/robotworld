@@ -1,0 +1,10 @@
+Making all in src
+make[1]: Entering directory '/home/ernesto/sources/robotworld/linux/src'
+make  all-am
+make[2]: Entering directory '/home/ernesto/sources/robotworld/linux/src'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/ernesto/sources/robotworld/linux/src'
+make[1]: Leaving directory '/home/ernesto/sources/robotworld/linux/src'
+make[1]: Entering directory '/home/ernesto/sources/robotworld/linux'
+make[1]: Nothing to be done for 'all-am'.
+make[1]: Leaving directory '/home/ernesto/sources/robotworld/linux'
