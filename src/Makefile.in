@@ -123,6 +123,7 @@ am_robotworld_OBJECTS = robotworld-AbstractActuator.$(OBJEXT) \
 	robotworld-NotificationHandler.$(OBJEXT) \
 	robotworld-Notifier.$(OBJEXT) robotworld-ObjectId.$(OBJEXT) \
 	robotworld-Observer.$(OBJEXT) \
+	robotworld-OdometerCompasSensor.$(OBJEXT) \
 	robotworld-RectangleShape.$(OBJEXT) robotworld-Robot.$(OBJEXT) \
 	robotworld-RobotShape.$(OBJEXT) \
 	robotworld-RobotWorld.$(OBJEXT) \
@@ -185,6 +186,7 @@ am__depfiles_remade = ./$(DEPDIR)/robotworld-AStar.Po \
 	./$(DEPDIR)/robotworld-Notifier.Po \
 	./$(DEPDIR)/robotworld-ObjectId.Po \
 	./$(DEPDIR)/robotworld-Observer.Po \
+	./$(DEPDIR)/robotworld-OdometerCompasSensor.Po \
 	./$(DEPDIR)/robotworld-RectangleShape.Po \
 	./$(DEPDIR)/robotworld-Robot.Po \
 	./$(DEPDIR)/robotworld-RobotShape.Po \
@@ -221,6 +223,24 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_@AM_V@)
+am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_@AM_V@)
+am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
 SOURCES = $(robotworld_SOURCES)
 DIST_SOURCES = $(robotworld_SOURCES)
 am__can_run_installinfo = \
@@ -446,11 +466,13 @@ robotworld_SOURCES = AbstractActuator.cpp	\
 						MainFrameWindow.cpp	\
 						MainSettings.cpp	\
 						MathUtils.cpp	\
+						Matrix.inc	\
 						ModelObject.cpp	\
 						NotificationHandler.cpp	\
 						Notifier.cpp	\
 						ObjectId.cpp	\
 						Observer.cpp	\
+						OdometerCompasSensor.cpp	\
 						RectangleShape.cpp	\
 						Robot.cpp	\
 						RobotShape.cpp	\
@@ -606,6 +628,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-Notifier.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-ObjectId.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-Observer.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-OdometerCompasSensor.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-RectangleShape.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-Robot.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/robotworld-RobotShape.Po@am__quote@ # am--include-marker
@@ -975,6 +998,20 @@ robotworld-Observer.obj: Observer.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Observer.cpp' object='robotworld-Observer.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -c -o robotworld-Observer.obj `if test -f 'Observer.cpp'; then $(CYGPATH_W) 'Observer.cpp'; else $(CYGPATH_W) '$(srcdir)/Observer.cpp'; fi`
+
+robotworld-OdometerCompasSensor.o: OdometerCompasSensor.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -MT robotworld-OdometerCompasSensor.o -MD -MP -MF $(DEPDIR)/robotworld-OdometerCompasSensor.Tpo -c -o robotworld-OdometerCompasSensor.o `test -f 'OdometerCompasSensor.cpp' || echo '$(srcdir)/'`OdometerCompasSensor.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/robotworld-OdometerCompasSensor.Tpo $(DEPDIR)/robotworld-OdometerCompasSensor.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='OdometerCompasSensor.cpp' object='robotworld-OdometerCompasSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -c -o robotworld-OdometerCompasSensor.o `test -f 'OdometerCompasSensor.cpp' || echo '$(srcdir)/'`OdometerCompasSensor.cpp
+
+robotworld-OdometerCompasSensor.obj: OdometerCompasSensor.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -MT robotworld-OdometerCompasSensor.obj -MD -MP -MF $(DEPDIR)/robotworld-OdometerCompasSensor.Tpo -c -o robotworld-OdometerCompasSensor.obj `if test -f 'OdometerCompasSensor.cpp'; then $(CYGPATH_W) 'OdometerCompasSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/OdometerCompasSensor.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/robotworld-OdometerCompasSensor.Tpo $(DEPDIR)/robotworld-OdometerCompasSensor.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='OdometerCompasSensor.cpp' object='robotworld-OdometerCompasSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -c -o robotworld-OdometerCompasSensor.obj `if test -f 'OdometerCompasSensor.cpp'; then $(CYGPATH_W) 'OdometerCompasSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/OdometerCompasSensor.cpp'; fi`
 
 robotworld-RectangleShape.o: RectangleShape.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(robotworld_CPPFLAGS) $(CPPFLAGS) $(robotworld_CXXFLAGS) $(CXXFLAGS) -MT robotworld-RectangleShape.o -MD -MP -MF $(DEPDIR)/robotworld-RectangleShape.Tpo -c -o robotworld-RectangleShape.o `test -f 'RectangleShape.cpp' || echo '$(srcdir)/'`RectangleShape.cpp
@@ -1369,6 +1406,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/robotworld-Notifier.Po
 	-rm -f ./$(DEPDIR)/robotworld-ObjectId.Po
 	-rm -f ./$(DEPDIR)/robotworld-Observer.Po
+	-rm -f ./$(DEPDIR)/robotworld-OdometerCompasSensor.Po
 	-rm -f ./$(DEPDIR)/robotworld-RectangleShape.Po
 	-rm -f ./$(DEPDIR)/robotworld-Robot.Po
 	-rm -f ./$(DEPDIR)/robotworld-RobotShape.Po
@@ -1454,6 +1492,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/robotworld-Notifier.Po
 	-rm -f ./$(DEPDIR)/robotworld-ObjectId.Po
 	-rm -f ./$(DEPDIR)/robotworld-Observer.Po
+	-rm -f ./$(DEPDIR)/robotworld-OdometerCompasSensor.Po
 	-rm -f ./$(DEPDIR)/robotworld-RectangleShape.Po
 	-rm -f ./$(DEPDIR)/robotworld-Robot.Po
 	-rm -f ./$(DEPDIR)/robotworld-RobotShape.Po

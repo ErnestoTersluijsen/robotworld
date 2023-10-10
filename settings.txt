@@ -1,0 +1,3 @@
+compas_stddev=2
+odometer_stddev=0.1
+lidar_stddev=10

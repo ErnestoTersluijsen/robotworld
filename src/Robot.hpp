@@ -111,6 +111,17 @@ namespace Model
 			 */
 			void setSpeed( 	float aNewSpeed,
 							bool aNotifyObservers = true);
+
+
+			void addPosition(const wxPoint position)
+			{
+				positions.push_back(position);
+			}
+
+			std::vector<wxPoint> getPositions() const
+			{
+				return positions;
+			}
 			/**
 			 *
 			 * @return true if the robot is acting, i.e. either planning or driving
@@ -330,6 +341,9 @@ namespace Model
 			 *
 			 */
 			Messaging::ServerPtr server;
+
+
+			std::vector<wxPoint> positions;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

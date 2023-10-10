@@ -17,11 +17,13 @@ robotworld_SOURCES 	= 	AbstractActuator.cpp	\
 						MainFrameWindow.cpp	\
 						MainSettings.cpp	\
 						MathUtils.cpp	\
+						Matrix.inc	\
 						ModelObject.cpp	\
 						NotificationHandler.cpp	\
 						Notifier.cpp	\
 						ObjectId.cpp	\
 						Observer.cpp	\
+						OdometerCompasSensor.cpp	\
 						RectangleShape.cpp	\
 						Robot.cpp	\
 						RobotShape.cpp	\

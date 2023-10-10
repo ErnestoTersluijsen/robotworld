@@ -4,6 +4,7 @@
 #include "CommunicationService.hpp"
 #include "Goal.hpp"
 #include "LaserDistanceSensor.hpp"
+#include "OdometerCompasSensor.hpp"
 #include "Logger.hpp"
 #include "MainApplication.hpp"
 #include "MathUtils.hpp"
@@ -14,6 +15,7 @@
 #include "Shape2DUtils.hpp"
 #include "Wall.hpp"
 #include "WayPoint.hpp"
+#include "DistanceAnglePercept.hpp"
 
 #include <chrono>
 #include <ctime>
@@ -50,6 +52,9 @@ namespace Model
 	{
 		std::shared_ptr< AbstractSensor > laserSensor = std::make_shared<LaserDistanceSensor>( *this);
 		attachSensor( laserSensor);
+
+		std::shared_ptr< AbstractSensor > odometerCompasSensor = std::make_shared<OdometerCompasSensor>( *this);
+		attachSensor( odometerCompasSensor);
 
 		// We use the real position for starters, not an estimated position.
 		startPosition = position;
@@ -472,7 +477,12 @@ namespace Model
 						{
 							DistancePercept* distancePercept = dynamic_cast<DistancePercept*>(percept.value().get());
 							currentRadarPointCloud.push_back(*distancePercept);
-						}else
+						} else if(typeid(tempAbstractPercept) == typeid(DistanceAnglePercept))
+						{
+							DistanceAnglePercept* distanceAnglePercept = dynamic_cast<DistanceAnglePercept*>(percept.value().get());
+							//TODO implement kalman here you idiot
+
+						} else
 						{
 							Application::Logger::log(std::string("Unknown type of percept:") + typeid(tempAbstractPercept).name());
 						}
@@ -483,6 +493,7 @@ namespace Model
 				}
 
 				// Update the belief
+				//TODO kalman ofzo??
 
 				// Stop on arrival or collision
 				if (arrived(goal) || collision())
