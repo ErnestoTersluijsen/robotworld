@@ -13,6 +13,9 @@
 #include "Point.hpp"
 #include "Region.hpp"
 #include "Size.hpp"
+#include "DistanceAnglePercept.hpp"
+#include "Matrix.hpp"
+#include "ParticleFilter.hpp"
 
 #include <iostream>
 #include <memory>
@@ -121,6 +124,31 @@ namespace Model
 			std::vector<wxPoint> getPositions() const
 			{
 				return positions;
+			}
+
+			std::vector<wxPoint> getPredPositions() const
+			{
+				return predPositions;
+			}
+
+			PointCloud getLidarPointCloud()
+			{
+				return lidarPointCloud;
+			}
+
+			void setLidarPointCloud(PointCloud pc)
+			{
+				lidarPointCloud = pc;
+			}
+
+			ParticleFilter getParticleFilter()
+			{
+				return particleFilter;
+			}
+
+			void setParticleFilter(ParticleFilter pf)
+			{
+				particleFilter = pf;
 			}
 			/**
 			 *
@@ -267,6 +295,9 @@ namespace Model
 			PointCloud currentRadarPointCloud; // The latest radar point cloud
 			//@}
 
+
+			void predictPositionKalman(DistanceAnglePercept* distanceAnglePercept);
+
 		protected:
 			/**
 			 *
@@ -344,6 +375,15 @@ namespace Model
 
 
 			std::vector<wxPoint> positions;
+
+			Matrix<double, 2, 1> kalmanResultMu;
+			Matrix<double, 2, 2> kalmanResultSigma;
+
+			std::vector<wxPoint> predPositions;
+
+			PointCloud lidarPointCloud;
+
+			ParticleFilter particleFilter;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

@@ -156,6 +156,8 @@ namespace Utils
 			 */
 			static std::string asString( const wxSize& aSize);
 
+			static wxPoint calculateNewPoint( const wxPoint& aPoint, double anAngle, double distance);
+
 		protected:
 			static double rotateX(	const wxPoint& aPoint,
 									double anAngle);

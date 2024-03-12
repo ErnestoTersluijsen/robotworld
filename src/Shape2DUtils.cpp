@@ -435,5 +435,14 @@ namespace Utils
 	{
 		return Shape2DUtils::rotateY( aPoint.x, aPoint.y, anAngle);
 	}
+
+
+	/**
+	 *
+	 */
+	/* static */wxPoint Shape2DUtils::calculateNewPoint( const wxPoint& aPoint, double anAngle, double distance)
+	{
+		return wxPoint(static_cast<int>(aPoint.x + distance * std::cos(anAngle)), static_cast<int>(aPoint.y + distance * std::sin(anAngle)) );
+	}
 } // namespace Utils
 

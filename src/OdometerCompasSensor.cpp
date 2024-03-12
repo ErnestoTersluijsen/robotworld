@@ -30,8 +30,8 @@ namespace Model
 		{
 			std::random_device rd{};
 			std::mt19937 gen{rd()};
-			std::normal_distribution<double> odometerNoise{0.0, OdometerCompasSensor::odometerStddev};
 			std::normal_distribution<double> compasNoise{0.0, OdometerCompasSensor::compasStddev};
+			std::normal_distribution<double> odometerNoise{0.0, OdometerCompasSensor::odometerStddev};
 
 			wxPoint currentPos = robot->getPosition();
 			double angle = Utils::Shape2DUtils::getAngle( robot->getFront()) + Utils::MathUtils::toRadians(compasNoise(gen));
@@ -39,10 +39,16 @@ namespace Model
 			if(robot->getPositions().size() > 0)
 			{
 				wxPoint previousPos = robot->getPositions().back();
-				double distance = Utils::Shape2DUtils::distance(currentPos, previousPos);
-				distance += distance * odometerNoise(gen);
-				robot->addPosition(currentPos);
-				return std::make_shared< DistanceStimulus >( angle, distance);
+
+				// only make a new stimulus if the robot has actually moved, else return invalid stimulus
+				if(currentPos != previousPos)
+				{
+					double distance = Utils::Shape2DUtils::distance(currentPos, previousPos);
+					distance += distance * odometerNoise(gen);
+					robot->addPosition(currentPos);
+					return std::make_shared< DistanceStimulus >( angle, distance);
+				}
+				return std::make_shared< DistanceStimulus >( noAngle,noDistance);
 
 			}
 			robot->addPosition(currentPos);

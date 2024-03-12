@@ -27,7 +27,6 @@ namespace Model
 		virtual std::shared_ptr< AbstractStimulus > getStimulus() const override;
 		virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractStimulus) const override;
 
-	private:
 		static double compasStddev;
 		static double odometerStddev;
 	};

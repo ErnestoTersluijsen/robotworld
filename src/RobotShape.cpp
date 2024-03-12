@@ -93,6 +93,8 @@ namespace View
 		drawRobot( dc);
 
 		drawLaser( dc);
+
+		drawLiDAR(dc);
 	}
 	/**
 	 *
@@ -257,6 +259,32 @@ namespace View
 			{
 				dc.SetPen( wxPen(  "RED", borderWidth, wxPENSTYLE_SOLID));
 				dc.DrawCircle( d.point, 1);
+			}
+		}
+
+//		for (unsigned long int i = 1; i < getRobot()->getPredPositions().size(); ++i)
+//		{
+//			dc.SetPen( wxPen(  "CYAN", borderWidth, wxPENSTYLE_SOLID));
+//			dc.DrawLine(getRobot()->getPredPositions().at(i - 1), getRobot()->getPredPositions().at(i));
+//		}
+		for(auto particle : getRobot()->getParticleFilter().getParticles())
+		{
+			dc.SetPen( wxPen(  "BLUE", borderWidth, wxPENSTYLE_SOLID));
+			dc.DrawCircle( particle.getLocation(), 1);
+		}
+	}
+
+	void RobotShape::drawLiDAR( wxDC& dc)
+	{
+		double angle = Utils::Shape2DUtils::getAngle( getRobot()->getFront());
+
+		// Draw the radar endPoints that are actually touching the walls
+		for (const Model::DistancePercept &d : getRobot()->getLidarPointCloud())
+		{
+			if (d.point != wxDefaultPosition || (d.point.x != Model::noObject && d.point.y != Model::noObject))
+			{
+				dc.SetPen( wxPen(  "YELLOW", borderWidth, wxPENSTYLE_SOLID));
+				dc.DrawLine( centre.x, centre.y, centre.x + d.point.x, centre.y + d.point.y);
 			}
 		}
 	}

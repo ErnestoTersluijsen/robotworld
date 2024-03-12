@@ -9,6 +9,7 @@ robotworld_SOURCES 	= 	AbstractActuator.cpp	\
 						Goal.cpp	\
 						GoalShape.cpp	\
 						LaserDistanceSensor.cpp	\
+						LiDAR.cpp	\
 						LineShape.cpp	\
 						Logger.cpp	\
 						LogTextCtrl.cpp	\
@@ -24,6 +25,8 @@ robotworld_SOURCES 	= 	AbstractActuator.cpp	\
 						ObjectId.cpp	\
 						Observer.cpp	\
 						OdometerCompasSensor.cpp	\
+						Particle.cpp	\
+						ParticleFilter.cpp	\
 						RectangleShape.cpp	\
 						Robot.cpp	\
 						RobotShape.cpp	\

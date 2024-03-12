@@ -5,6 +5,7 @@
 #include "Goal.hpp"
 #include "LaserDistanceSensor.hpp"
 #include "OdometerCompasSensor.hpp"
+#include "LiDAR.hpp"
 #include "Logger.hpp"
 #include "MainApplication.hpp"
 #include "MathUtils.hpp"
@@ -48,13 +49,20 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false)
+								communicating(false),
+//								positions({position}),
+								kalmanResultMu({0, 0}),
+								kalmanResultSigma({ { 1 , 0}, {0, 1} }),
+								particleFilter(1000)
 	{
 		std::shared_ptr< AbstractSensor > laserSensor = std::make_shared<LaserDistanceSensor>( *this);
 		attachSensor( laserSensor);
 
 		std::shared_ptr< AbstractSensor > odometerCompasSensor = std::make_shared<OdometerCompasSensor>( *this);
 		attachSensor( odometerCompasSensor);
+
+		std::shared_ptr< AbstractSensor > lidar = std::make_shared<LiDAR>( *this);
+		attachSensor( lidar);
 
 		// We use the real position for starters, not an estimated position.
 		startPosition = position;
@@ -451,6 +459,12 @@ namespace Model
 			// We use the real position for starters, not an estimated position.
 			startPosition = position;
 
+			positions.clear();
+			positions.push_back(startPosition);
+			predPositions.clear();
+
+			wxPoint prevPosition = startPosition;
+
 			unsigned pathPoint = 0;
 			while (position.x > 0 && position.x < 1024 && position.y > 0 && position.y < 1024 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
 			{
@@ -477,12 +491,29 @@ namespace Model
 						{
 							DistancePercept* distancePercept = dynamic_cast<DistancePercept*>(percept.value().get());
 							currentRadarPointCloud.push_back(*distancePercept);
-						} else if(typeid(tempAbstractPercept) == typeid(DistanceAnglePercept))
+						}
+						else if(typeid(tempAbstractPercept) == typeid(DistanceAnglePercept))
 						{
 							DistanceAnglePercept* distanceAnglePercept = dynamic_cast<DistanceAnglePercept*>(percept.value().get());
 							//TODO implement kalman here you idiot
+							predictPositionKalman(distanceAnglePercept);
+						}
+						else if (typeid(tempAbstractPercept) == typeid(DistancePercepts))
+						{
+							DistancePercepts* distancePercepts = dynamic_cast<DistancePercepts*>(percept.value().get());
+							lidarPointCloud = distancePercepts->pointCloud;
 
-						} else
+							particleFilter.update(lidarPointCloud, position - prevPosition);
+
+//							particleFilter.moveParticles();
+
+							prevPosition = position;
+
+
+//							std::cout << "distance percepts" << distancePercepts->pointCloud.front().point << std::endl;
+
+						}
+						else
 						{
 							Application::Logger::log(std::string("Unknown type of percept:") + typeid(tempAbstractPercept).name());
 						}
@@ -596,4 +627,42 @@ namespace Model
 		return false;
 	}
 
+	void Robot::predictPositionKalman(DistanceAnglePercept* distanceAnglePercept)
+	{
+		if(predPositions.empty())
+		{
+			predPositions.push_back(getPosition());
+		}
+
+		if(distanceAnglePercept->isValid())
+		{
+			wxPoint deltaPoint = Utils::Shape2DUtils::calculateNewPoint(wxPoint(0, 0), distanceAnglePercept->angle, distanceAnglePercept->distance);
+
+			Matrix<double, 2, 2> A { {1, 1}, {0, 1} };
+			Matrix<double, 2, 1> B { 0.5, 1};
+			Matrix<double, 2, 2> Q { {1, 0}, {0, 1} };
+			Matrix<double, 2, 1> measurement {static_cast<double>(deltaPoint.x), static_cast<double>(deltaPoint.y)};
+			double update = 0;
+
+
+			Matrix<double, 2, 1> predMu = predictStateVector(kalmanResultMu, A, B, update);
+
+			Matrix<double, 2, 2> predSigma = predictCovariance(kalmanResultSigma, A);
+
+			Matrix<double, 2, 2> kalman = calculateKalman(predSigma, Q);
+
+			Matrix<double, 2, 1> Z = calculateMeasurement(measurement, predSigma);
+
+			Matrix<double, 2, 1> adjMu = calculateAdjustedStateVector(predMu, kalman, Z);
+
+			Matrix<double, 2, 2> adjSigma = calculateAdjustedCovarianceMatrix(kalman, predSigma);
+
+			kalmanResultMu = adjMu;
+			kalmanResultSigma = adjSigma;
+
+			wxPoint location = predPositions.back() + wxPoint(adjMu.at(0, 0), adjMu.at(1, 0));
+
+			predPositions.push_back(location);
+		}
+	}
 } // namespace Model

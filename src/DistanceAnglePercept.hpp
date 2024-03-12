@@ -36,6 +36,15 @@ namespace Model
 		{
 			return asString();
 		}
+
+		bool isValid()
+		{
+			if(angle != noAngle && distance != noDistance)
+			{
+				return true;
+			}
+			return false;
+		}
 	};
 } // namespace Model
 #endif /* SRC_DISTANCEANGLEPERCEPT_HPP_ */

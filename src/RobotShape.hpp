@@ -149,6 +149,10 @@ namespace View
 			 *
 			 */
 			void drawLaser( wxDC& dc);
+			/**
+			 *
+			 */
+			void drawLiDAR( wxDC& dc);
 	};
 } // namespace View
 #endif // ROBOTSHAPE_HPP_
