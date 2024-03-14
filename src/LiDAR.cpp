@@ -112,8 +112,8 @@ namespace Model
 					}
 					else
 					{
-						wxPoint endpoint{	static_cast< int >( std::cos( distanceStimulus.angle)*distanceStimulus.distance),
-														static_cast< int >( std::sin( distanceStimulus.angle)*distanceStimulus.distance)};
+						wxPoint endpoint{	static_cast< int >( std::cos( distanceStimulus.angle) * distanceStimulus.distance),
+														static_cast< int >( std::sin( distanceStimulus.angle) * distanceStimulus.distance)};
 
 						result.pointCloud.push_back(DistancePercept(endpoint));
 					}

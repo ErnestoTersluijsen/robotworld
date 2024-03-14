@@ -55,7 +55,7 @@ namespace Model
 
 	void ParticleFilter::measurementUpdate(PointCloud pc)
 	{
-		for(auto &particle : particles)
+		for(Particle& particle : particles)
 		{
 			particle.computeWeight(pc);
 		}
@@ -83,14 +83,10 @@ namespace Model
 
         std::discrete_distribution<int> dist(weights.begin(), weights.end());
 
-        for(unsigned long int i = 0; i < particles.size(); ++i)
+        for(size_t i = 0; i < particles.size(); ++i)
         {
-        	int index = dist(gen);
+        	size_t index = dist(gen);
         	resample.push_back(particles.at(index));
-        }
-
-        for (Particle& particle : resample) {
-            particle.setWeight(1.0);
         }
 
         particles = resample;

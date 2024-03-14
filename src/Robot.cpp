@@ -461,6 +461,7 @@ namespace Model
 
 			positions.clear();
 			positions.push_back(startPosition);
+
 			predPositions.clear();
 
 			wxPoint prevPosition = startPosition;

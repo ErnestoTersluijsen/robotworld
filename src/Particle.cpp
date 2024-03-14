@@ -66,20 +66,6 @@ namespace Model
 
 	void Particle::computeWeight(PointCloud pc)
 	{
-//		double difference = 0;
-//
-//		for (unsigned i = 0; i < pc.size(); ++i) {
-//		    // Controleer of de pc-waarde (-1, -1) is en pas deze aan.
-//		    wxPoint currentPoint = pc.at(i).point;
-//		    if (currentPoint.x == -1 && currentPoint.y == -1) {
-//		        currentPoint.x = 1024;
-//		        currentPoint.y = 1024;
-//		    }
-//
-//		    difference += std::abs(Utils::Shape2DUtils::distance(wxPoint(0, 0), pointCloud.at(i).point) - Utils::Shape2DUtils::distance(wxPoint(0, 0), currentPoint));
-//		}
-//
-//		weight *= 1.0 / (1.0 + difference);
 
 		double difference = 0;
 
@@ -88,34 +74,7 @@ namespace Model
 			difference += std::abs(Utils::Shape2DUtils::distance(wxPoint(0 ,0), pointCloud.at(i).point) - Utils::Shape2DUtils::distance(wxPoint(0 ,0), pc.at(i).point));
 		}
 
-		weight *= 1.0 / (1.0 + difference);
-
-//	    double weight = 1.0;
-//
-//	    unsigned numValidMeasurements = 0;
-//	    double totalDistanceDifference = 0.0;
-//
-//	    for (unsigned i = 0; i < pc.size(); ++i) {
-//	        const wxPoint& measuredPoint = pc[i].point;
-//	        const wxPoint& expectedPoint = pointCloud[i].point;
-//
-//	        if (measuredPoint.x != -1 && measuredPoint.y != -1 && expectedPoint.x != -1 && expectedPoint.y != -1) {
-//	            double measuredDistance = Utils::Shape2DUtils::distance(wxPoint(0, 0), measuredPoint);
-//	            double expectedDistance = Utils::Shape2DUtils::distance(wxPoint(0, 0), expectedPoint);
-//	            // Bereken het absolute verschil tussen de gemeten en verwachte afstanden.
-//	            double distanceDifference = std::abs(measuredDistance - expectedDistance);
-//
-//	            // Update het totale afstandsverschil en het aantal geldige metingen.
-//	            totalDistanceDifference += distanceDifference;
-//	            numValidMeasurements++;
-//	        }
-//	    }
-//
-//	    double meanDistanceDifference = totalDistanceDifference / numValidMeasurements;
-//	    weight = 1.0 / (1.0 + meanDistanceDifference);
-//
-//
-//	    this->weight = weight;
+		weight = 1.0 / (1.0 + difference);
 	}
 
 
