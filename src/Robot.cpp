@@ -660,7 +660,7 @@ namespace Model
 			kalmanResultMu = adjMu;
 			kalmanResultSigma = adjSigma;
 
-			wxPoint location = predPositions.back() + wxPoint(adjMu.at(0, 0), adjMu.at(1, 0));
+			wxPoint location = predPositions.back() + wxPoint(static_cast<int>(adjMu.at(0, 0)), static_cast<int>(adjMu.at(1, 0)));
 
 			predPositions.push_back(location);
 		}

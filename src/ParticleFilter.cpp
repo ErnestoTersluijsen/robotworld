@@ -49,7 +49,7 @@ namespace Model
 
 		for(Particle& particle : particles)
 		{
-			particle.moveParticle(movement + wxPoint(noise(gen), noise(gen)));
+			particle.moveParticle(movement + wxPoint(static_cast<int>(noise(gen)), static_cast<int>(noise(gen))));
 		}
 	}
 

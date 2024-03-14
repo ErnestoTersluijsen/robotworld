@@ -276,8 +276,6 @@ namespace View
 
 	void RobotShape::drawLiDAR( wxDC& dc)
 	{
-		double angle = Utils::Shape2DUtils::getAngle( getRobot()->getFront());
-
 		// Draw the radar endPoints that are actually touching the walls
 		for (const Model::DistancePercept &d : getRobot()->getLidarPointCloud())
 		{
