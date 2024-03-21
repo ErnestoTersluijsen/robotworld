@@ -126,11 +126,6 @@ namespace Model
 				return positions;
 			}
 
-			std::vector<wxPoint> getPredPositions() const
-			{
-				return predPositions;
-			}
-
 			PointCloud getLidarPointCloud()
 			{
 				return lidarPointCloud;
@@ -373,13 +368,7 @@ namespace Model
 			 */
 			Messaging::ServerPtr server;
 
-
 			std::vector<wxPoint> positions;
-
-			Matrix<double, 2, 1> kalmanResultMu;
-			Matrix<double, 2, 2> kalmanResultSigma;
-
-			std::vector<wxPoint> predPositions;
 
 			PointCloud lidarPointCloud;
 

@@ -50,9 +50,6 @@ namespace Model
 								acting(false),
 								driving(false),
 								communicating(false),
-//								positions({position}),
-								kalmanResultMu({0, 0}),
-								kalmanResultSigma({ { 1 , 0}, {0, 1} }),
 								particleFilter(1000)
 	{
 		std::shared_ptr< AbstractSensor > laserSensor = std::make_shared<LaserDistanceSensor>( *this);
@@ -462,8 +459,6 @@ namespace Model
 			positions.clear();
 			positions.push_back(startPosition);
 
-			predPositions.clear();
-
 			wxPoint prevPosition = startPosition;
 
 			unsigned pathPoint = 0;
@@ -497,7 +492,7 @@ namespace Model
 						{
 							DistanceAnglePercept* distanceAnglePercept = dynamic_cast<DistanceAnglePercept*>(percept.value().get());
 							//TODO implement kalman here you idiot
-							predictPositionKalman(distanceAnglePercept);
+
 						}
 						else if (typeid(tempAbstractPercept) == typeid(DistancePercepts))
 						{
@@ -626,44 +621,5 @@ namespace Model
 			}
 		}
 		return false;
-	}
-
-	void Robot::predictPositionKalman(DistanceAnglePercept* distanceAnglePercept)
-	{
-		if(predPositions.empty())
-		{
-			predPositions.push_back(getPosition());
-		}
-
-		if(distanceAnglePercept->isValid())
-		{
-			wxPoint deltaPoint = Utils::Shape2DUtils::calculateNewPoint(wxPoint(0, 0), distanceAnglePercept->angle, distanceAnglePercept->distance);
-
-			Matrix<double, 2, 2> A { {1, 1}, {0, 1} };
-			Matrix<double, 2, 1> B { 0.5, 1};
-			Matrix<double, 2, 2> Q { {1, 0}, {0, 1} };
-			Matrix<double, 2, 1> measurement {static_cast<double>(deltaPoint.x), static_cast<double>(deltaPoint.y)};
-			double update = 0;
-
-
-			Matrix<double, 2, 1> predMu = predictStateVector(kalmanResultMu, A, B, update);
-
-			Matrix<double, 2, 2> predSigma = predictCovariance(kalmanResultSigma, A);
-
-			Matrix<double, 2, 2> kalman = calculateKalman(predSigma, Q);
-
-			Matrix<double, 2, 1> Z = calculateMeasurement(measurement, predSigma);
-
-			Matrix<double, 2, 1> adjMu = calculateAdjustedStateVector(predMu, kalman, Z);
-
-			Matrix<double, 2, 2> adjSigma = calculateAdjustedCovarianceMatrix(kalman, predSigma);
-
-			kalmanResultMu = adjMu;
-			kalmanResultSigma = adjSigma;
-
-			wxPoint location = predPositions.back() + wxPoint(static_cast<int>(adjMu.at(0, 0)), static_cast<int>(adjMu.at(1, 0)));
-
-			predPositions.push_back(location);
-		}
 	}
 } // namespace Model
