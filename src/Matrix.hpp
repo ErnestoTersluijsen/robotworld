@@ -273,29 +273,29 @@ template<typename T, std::size_t Mstate, std::size_t Nstate, std::size_t Mtm, st
 std::size_t steadyState(const Matrix<T, Mstate, Nstate> &m0, Matrix<T, Mtm, Ntm> &m1);
 
 
+// ================================================ KALMAN ================================================
+
+//template<typename T, std::size_t Mmu, std::size_t Nmu, std::size_t Msigma, std::size_t Nsigma, std::size_t Ma, std::size_t Na, std::size_t Mb, std::size_t Nb, std::size_t Mq, std::size_t Nq, std::size_t Mmeasurement, std::size_t Nmeasurement>
+//std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> kalmanFilter(std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> initial, Matrix< T, Ma, Na > A, Matrix< T, Mb, Nb > B, Matrix< T, Mq, Nq > Q, Matrix<T, Mmeasurement, Nmeasurement> measurement, T ontwikkeling);
 
 
+template< typename T, std::size_t M, std::size_t N, std::size_t Mupdate, std::size_t Nupdate>
+Matrix< T, M, N > predictStateVector(Matrix< T, M, N >& stateVector, Matrix< T, Mupdate, Nupdate >& A, Matrix< T, Mupdate, Nupdate >& B, Matrix< T, Mupdate, Nupdate >& update);
 
-template<typename T, std::size_t Mmu, std::size_t Nmu, std::size_t Msigma, std::size_t Nsigma, std::size_t Ma, std::size_t Na, std::size_t Mb, std::size_t Nb, std::size_t Mq, std::size_t Nq, std::size_t Mmeasurement, std::size_t Nmeasurement>
-std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> kalmanFilter(std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> initial, Matrix< T, Ma, Na > A, Matrix< T, Mb, Nb > B, Matrix< T, Mq, Nq > Q, Matrix<T, Mmeasurement, Nmeasurement> measurement, T ontwikkeling);
+template< typename T, std::size_t M>
+Matrix< T, M, M > predictCovarianceMatrix(Matrix< T, M, M >& covarianceMatrix, Matrix< T, M, M >& A);
 
-template< typename T, std::size_t Mmu, std::size_t Nmu, std::size_t Ma, std::size_t Na, std::size_t Mb, std::size_t Nb>
-Matrix<T, Mmu, Nmu> predictStateVector(Matrix< T, Mmu, Nmu > mu, Matrix< T, Ma, Na > A, Matrix< T, Mb, Nb > B, T ontwikkeling);
+template< typename T, std::size_t M>
+Matrix< T, M, M > calculateKalmanGain(Matrix< T, M, M >& covarianceMatrix, Matrix< T, M, M >& C, Matrix< T, M, M >& Q);
 
-template< typename T, std::size_t Msigma, std::size_t Nsigma, std::size_t Ma, std::size_t Na>
-Matrix<T, Msigma, Nsigma> predictCovariance(Matrix< T, Msigma, Nsigma > sigma, Matrix< T, Ma, Na > A);
+template< typename T, std::size_t M, std::size_t N>
+Matrix< T, M, N > calculateMeasurementVector(Matrix< T, M, N >& measurement, Matrix< T, M, M >& C);
 
-template< typename T, std::size_t Msigma, std::size_t Nsigma, std::size_t Mq, std::size_t Nq>
-Matrix<T, Msigma, Nsigma> calculateKalman(Matrix< T, Msigma, Nsigma > sigma, Matrix< T, Mq, Nq > Q);
+template< typename T, std::size_t M, std::size_t N>
+Matrix< T, M, N > calculateAdjustedStateVector(Matrix< T, M, N >& predictedStateVector, Matrix< T, M, M >& kalmanGain, Matrix< T, M, N >& measurementVector, Matrix< T, M, M >& C);
 
-template< typename T, std::size_t Mmeasurement, std::size_t Nmeasurement, std::size_t Msigma, std::size_t Nsigma>
-Matrix<T, Mmeasurement, Nmeasurement> calculateMeasurement(Matrix<T, Mmeasurement, Nmeasurement> measurement, Matrix< T, Msigma, Nsigma > sigma);
-
-template< typename T, std::size_t Mmu, std::size_t Nmu, std::size_t Mkalman, std::size_t Nkalman, std::size_t Mmeasurement, std::size_t Nmeasurement>
-Matrix<T, Mmu, Nmu> calculateAdjustedStateVector(Matrix< T, Mmu, Nmu > mu, Matrix<T, Mkalman, Nkalman> kalman, Matrix<T, Mmeasurement, Nmeasurement> measurement);
-
-template< typename T, std::size_t Mkalman, std::size_t Nkalman, std::size_t Msigma, std::size_t Nsigma>
-Matrix<T, Mkalman, Nkalman> calculateAdjustedCovarianceMatrix(Matrix< T, Mkalman, Nkalman > kalman, Matrix< T, Msigma, Nsigma > sigma);
+template< typename T, std::size_t M>
+Matrix< T, M, M > calculateAdjustedCovarianceMatrix(Matrix< T, M, M >& C, Matrix< T, M, M >& kalman, Matrix< T, M, M >& predictedCovarianceMatrix);
 
 
 
