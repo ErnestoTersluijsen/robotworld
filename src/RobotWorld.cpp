@@ -280,12 +280,12 @@ namespace Model
 		{
 			case 4:
 			{
-				RobotWorld::getRobotWorld().newRobot( "Robot", wxPoint(163,105),false);
-				RobotWorld::getRobotWorld().newWall( wxPoint(7,234),wxPoint(404,206),false);
-				RobotWorld::getRobotWorld().newWall( wxPoint(382,536),wxPoint(750,435),false);
-				RobotWorld::getRobotWorld().newWall( wxPoint(863,54),wxPoint(993,237),false);
-				RobotWorld::getRobotWorld().newWall( wxPoint(909,595),wxPoint(835,830),false);
-				RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(696,552),false);
+				RobotWorld::getRobotWorld().newRobot( "Robot", wxPoint(155,96),false);
+				RobotWorld::getRobotWorld().newWall( wxPoint(7,234),wxPoint(524,315),false);
+				RobotWorld::getRobotWorld().newWall( wxPoint(313,600),wxPoint(773,464),false);
+				RobotWorld::getRobotWorld().newWall( wxPoint(863,54),wxPoint(995,423),false);
+				RobotWorld::getRobotWorld().newWall( wxPoint(999,489),wxPoint(835,830),false);
+				RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(782,757),false);
 
 				break;
 

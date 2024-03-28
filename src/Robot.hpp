@@ -145,6 +145,18 @@ namespace Model
 			{
 				particleFilter = pf;
 			}
+
+			const std::vector<wxPoint>& getPredictedPositions() const
+			{
+				return predictedPositions;
+			}
+
+			void setPredictedPositions(const std::vector<wxPoint> &aPredictedPositions)
+			{
+				predictedPositions = aPredictedPositions;
+			}
+
+
 			/**
 			 *
 			 * @return true if the robot is acting, i.e. either planning or driving
@@ -291,7 +303,7 @@ namespace Model
 			//@}
 
 
-			void predictPositionKalman(DistanceAnglePercept* distanceAnglePercept);
+			void predictPositionKalman(double x, double y);
 
 		protected:
 			/**
@@ -370,9 +382,23 @@ namespace Model
 
 			std::vector<wxPoint> positions;
 
+			// ============	LIDAR ============
+
 			PointCloud lidarPointCloud;
 
 			ParticleFilter particleFilter;
+
+			// ============	KALMAN ============
+
+			Matrix<double, 2, 1> stateVector;
+
+			Matrix<double, 2, 2> covarianceMatrix;
+
+			std::vector<wxPoint> predictedPositions;
+
+			double previousDeltaX;
+
+			double previousDeltaY;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

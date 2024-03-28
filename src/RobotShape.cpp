@@ -262,11 +262,11 @@ namespace View
 			}
 		}
 
-//		for (unsigned long int i = 1; i < getRobot()->getPredPositions().size(); ++i)
-//		{
-//			dc.SetPen( wxPen(  "CYAN", borderWidth, wxPENSTYLE_SOLID));
-//			dc.DrawLine(getRobot()->getPredPositions().at(i - 1), getRobot()->getPredPositions().at(i));
-//		}
+		for (unsigned long int i = 1; i < getRobot()->getPredictedPositions().size(); ++i)
+		{
+			dc.SetPen( wxPen(  "CYAN", borderWidth, wxPENSTYLE_SOLID));
+			dc.DrawLine(getRobot()->getPredictedPositions().at(i - 1), getRobot()->getPredictedPositions().at(i));
+		}
 		for(auto particle : getRobot()->getParticleFilter().getParticles())
 		{
 			dc.SetPen( wxPen(  "BLUE", borderWidth, wxPENSTYLE_SOLID));

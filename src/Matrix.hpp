@@ -279,8 +279,8 @@ std::size_t steadyState(const Matrix<T, Mstate, Nstate> &m0, Matrix<T, Mtm, Ntm>
 //std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> kalmanFilter(std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> initial, Matrix< T, Ma, Na > A, Matrix< T, Mb, Nb > B, Matrix< T, Mq, Nq > Q, Matrix<T, Mmeasurement, Nmeasurement> measurement, T ontwikkeling);
 
 
-template< typename T, std::size_t M, std::size_t N, std::size_t Mupdate, std::size_t Nupdate>
-Matrix< T, M, N > predictStateVector(Matrix< T, M, N >& stateVector, Matrix< T, Mupdate, Nupdate >& A, Matrix< T, Mupdate, Nupdate >& B, Matrix< T, Mupdate, Nupdate >& update);
+template< typename T, std::size_t Mstate, std::size_t Nstate, std::size_t M, std::size_t N>
+Matrix< T, Mstate, Nstate > predictStateVector(Matrix< T, Mstate, Nstate >& stateVector, Matrix< T, M, N >& A, Matrix< T, M, N >& B, Matrix< T, Mstate, Nstate >& update);
 
 template< typename T, std::size_t M>
 Matrix< T, M, M > predictCovarianceMatrix(Matrix< T, M, M >& covarianceMatrix, Matrix< T, M, M >& A);

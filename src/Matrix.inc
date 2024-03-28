@@ -621,8 +621,8 @@ std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> kalmanFilter(std::pair
 //	return (A * stateVector) + (B * update);
 //}
 
-template< typename T, std::size_t M, std::size_t N, std::size_t Mupdate, std::size_t Nupdate>
-Matrix< T, M, N > predictStateVector(Matrix< T, M, N >& stateVector, Matrix< T, Mupdate, Nupdate >& A, Matrix< T, Mupdate, Nupdate >& B, Matrix< T, Mupdate, Nupdate >& update)
+template< typename T, std::size_t Mstate, std::size_t Nstate, std::size_t M, std::size_t N>
+Matrix< T, Mstate, Nstate > predictStateVector(Matrix< T, Mstate, Nstate >& stateVector, Matrix< T, M, N >& A, Matrix< T, M, N >& B, Matrix< T, Mstate, Nstate >& update)
 {
 	return (A * stateVector) + (B * update);
 }

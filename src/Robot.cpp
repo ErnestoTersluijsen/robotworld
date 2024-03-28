@@ -50,7 +50,11 @@ namespace Model
 								acting(false),
 								driving(false),
 								communicating(false),
-								particleFilter(1000)
+								particleFilter(1000),
+								stateVector({{{0}}, {{0}}}),
+								covarianceMatrix({{1, 0}, {0,1}}),
+								previousDeltaX(0),
+								previousDeltaY(0)
 	{
 		std::shared_ptr< AbstractSensor > laserSensor = std::make_shared<LaserDistanceSensor>( *this);
 		attachSensor( laserSensor);
@@ -459,7 +463,11 @@ namespace Model
 			positions.clear();
 			positions.push_back(startPosition);
 
+			predictedPositions.clear();
+
 			wxPoint prevPosition = startPosition;
+
+			bool startPositionSet = false;
 
 			unsigned pathPoint = 0;
 			while (position.x > 0 && position.x < 1024 && position.y > 0 && position.y < 1024 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
@@ -493,6 +501,28 @@ namespace Model
 							DistanceAnglePercept* distanceAnglePercept = dynamic_cast<DistanceAnglePercept*>(percept.value().get());
 							//TODO implement kalman here you idiot
 
+							if(!startPositionSet)
+							{
+								stateVector.at(0, 0) = position.x;
+								stateVector.at(1, 0) = position.y;
+								startPositionSet = true;
+							}
+
+							if(distanceAnglePercept->distance != noDistance && distanceAnglePercept->angle != noAngle)
+							{
+								double deltaX = distanceAnglePercept->distance * std::cos(distanceAnglePercept->angle);
+								double deltaY = distanceAnglePercept->distance * std::sin(distanceAnglePercept->angle);
+
+
+								if(previousDeltaX != 0 && previousDeltaY != 0) // previous delta X & Y is zero when the robot has moved to its first point
+								{
+									predictPositionKalman(deltaX, deltaY);
+								}
+								// TODO: reset predicted positions array when stopping robot and reset previousDeltaX & Y to 0
+
+								previousDeltaX = deltaX;
+								previousDeltaY = deltaY;
+							}
 						}
 						else if (typeid(tempAbstractPercept) == typeid(DistancePercepts))
 						{
@@ -501,13 +531,7 @@ namespace Model
 
 							particleFilter.update(lidarPointCloud, position - prevPosition);
 
-//							particleFilter.moveParticles();
-
 							prevPosition = position;
-
-
-//							std::cout << "distance percepts" << distancePercepts->pointCloud.front().point << std::endl;
-
 						}
 						else
 						{
@@ -520,7 +544,6 @@ namespace Model
 				}
 
 				// Update the belief
-				//TODO kalman ofzo??
 
 				// Stop on arrival or collision
 				if (arrived(goal) || collision())
@@ -621,5 +644,33 @@ namespace Model
 			}
 		}
 		return false;
+	}
+
+	void Robot::predictPositionKalman(double x, double y)
+	{
+		Matrix<double, 2, 2> A { { 1.0, 0.0 }, { 0.0, 1.0 } };
+		Matrix<double, 2, 2> B { { 1.0, 0.0 }, { 0.0, 1.0 } };
+		Matrix<double, 2, 2> C { { 1.0, 0.0 }, { 0.0, 1.0 } };
+
+		// previous deltaX and deltaY
+		Matrix<double, 2, 1> update { { {previousDeltaX} }, { {previousDeltaY} } };
+		Matrix<double, 2, 2> Q { { 1.0, 0.0 }, { 0.0, 1.0 } };
+
+		Matrix<double, 2, 1> measurement { {{ stateVector.at(0, 0) + x }}, {{ stateVector.at(1, 0) + y }} };
+
+		// TODO: change function in matrix.inc to remove boilerplate shit here
+		stateVector = predictStateVector(stateVector, A, B, update);
+
+		covarianceMatrix = predictCovarianceMatrix(covarianceMatrix, A);
+
+		Matrix<double, 2, 2> kalmanGain = calculateKalmanGain(covarianceMatrix, C, Q);
+
+		Matrix<double, 2, 1> measurementVector = calculateMeasurementVector(measurement, C);
+
+		stateVector = calculateAdjustedStateVector(stateVector, kalmanGain, measurementVector, C);
+
+		covarianceMatrix = calculateAdjustedCovarianceMatrix(C, kalmanGain, covarianceMatrix);
+
+		predictedPositions.push_back(wxPoint(static_cast<int>(stateVector.at(0, 0)), static_cast<int>(stateVector.at(1, 0))));
 	}
 } // namespace Model
