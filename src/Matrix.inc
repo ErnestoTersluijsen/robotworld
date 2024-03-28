@@ -596,31 +596,6 @@ std::size_t steadyState(const Matrix<T, Mstate, Nstate> &m0, Matrix<T, Mtm, Ntm>
 }
 
 
-template<typename T, std::size_t Mmu, std::size_t Nmu, std::size_t Msigma, std::size_t Nsigma, std::size_t Ma, std::size_t Na, std::size_t Mb, std::size_t Nb, std::size_t Mq, std::size_t Nq, std::size_t Mmeasurement, std::size_t Nmeasurement>
-std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> kalmanFilter(std::pair<Matrix<T, Mmu, Nmu>, Matrix<T, Msigma, Nsigma>> initial, Matrix< T, Ma, Na > A, Matrix< T, Mb, Nb > B, Matrix< T, Mq, Nq > Q, Matrix<T, Mmeasurement, Nmeasurement> measurement, T ontwikkeling)
-{
-	Matrix<T, Mmu, Nmu> predMu = predictStateVector(initial.first, A, B, ontwikkeling);
-
-	Matrix<T, Msigma, Nsigma> predSigma = predictCovariance(initial.second, A);
-
-	Matrix<T, Msigma , Nsigma> kalman = calculateKalman(predSigma, Q);
-
-	Matrix<T, Mmeasurement , Nmeasurement> Z = calculateMeasurement(measurement, predSigma);
-
-	Matrix<T, Mmu , Nmu> adjMu = calculateAdjustedStateVector(predMu, kalman, Z);
-
-	Matrix<T, Msigma , Nsigma> adjSigma = calculateAdjustedCovarianceMatrix(kalman, predSigma);
-	return {adjMu, adjSigma};
-}
-
-
-
-//template< typename T, std::size_t M, std::size_t N>
-//Matrix<T, M, N> predictStateVector(Matrix< T, M, N >& stateVector, Matrix< T, M, M >& A, Matrix< T, M, N >& B, T update)
-//{
-//	return (A * stateVector) + (B * update);
-//}
-
 template< typename T, std::size_t Mstate, std::size_t Nstate, std::size_t M, std::size_t N>
 Matrix< T, Mstate, Nstate > predictStateVector(Matrix< T, Mstate, Nstate >& stateVector, Matrix< T, M, N >& A, Matrix< T, M, N >& B, Matrix< T, Mstate, Nstate >& update)
 {

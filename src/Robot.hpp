@@ -7,6 +7,7 @@
 #include "AStar.hpp"
 #include "BoundedVector.hpp"
 #include "DistancePercepts.hpp"
+#include "KalmanFilter.hpp"
 #include "Message.hpp"
 #include "MessageHandler.hpp"
 #include "Observer.hpp"
@@ -390,9 +391,11 @@ namespace Model
 
 			// ============	KALMAN ============
 
-			Matrix<double, 2, 1> stateVector;
+			KalmanFilter kalmanFilter;
 
-			Matrix<double, 2, 2> covarianceMatrix;
+//			Matrix<double, 2, 1> stateVector;
+//
+//			Matrix<double, 2, 2> covarianceMatrix;
 
 			std::vector<wxPoint> predictedPositions;
 

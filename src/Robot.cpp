@@ -3,6 +3,7 @@
 #include "Client.hpp"
 #include "CommunicationService.hpp"
 #include "Goal.hpp"
+#include "KalmanFilter.hpp"
 #include "LaserDistanceSensor.hpp"
 #include "OdometerCompasSensor.hpp"
 #include "LiDAR.hpp"
@@ -51,8 +52,7 @@ namespace Model
 								driving(false),
 								communicating(false),
 								particleFilter(1000),
-								stateVector({{{0}}, {{0}}}),
-								covarianceMatrix({{1, 0}, {0,1}}),
+								kalmanFilter(),
 								previousDeltaX(0),
 								previousDeltaY(0)
 	{
@@ -503,8 +503,7 @@ namespace Model
 
 							if(!startPositionSet)
 							{
-								stateVector.at(0, 0) = position.x;
-								stateVector.at(1, 0) = position.y;
+								kalmanFilter.setStateVector(position.x, position.y);
 								startPositionSet = true;
 							}
 
@@ -656,21 +655,10 @@ namespace Model
 		Matrix<double, 2, 1> update { { {previousDeltaX} }, { {previousDeltaY} } };
 		Matrix<double, 2, 2> Q { { 1.0, 0.0 }, { 0.0, 1.0 } };
 
-		Matrix<double, 2, 1> measurement { {{ stateVector.at(0, 0) + x }}, {{ stateVector.at(1, 0) + y }} };
+		Matrix<double, 2, 1> measurement { {{ kalmanFilter.getStateVector().at(0, 0) + x }}, {{ kalmanFilter.getStateVector().at(1, 0) + y }} };
 
-		// TODO: change function in matrix.inc to remove boilerplate shit here
-		stateVector = predictStateVector(stateVector, A, B, update);
+		kalmanFilter.executeKalmanFilter(A, B, C, update, Q, measurement);
 
-		covarianceMatrix = predictCovarianceMatrix(covarianceMatrix, A);
-
-		Matrix<double, 2, 2> kalmanGain = calculateKalmanGain(covarianceMatrix, C, Q);
-
-		Matrix<double, 2, 1> measurementVector = calculateMeasurementVector(measurement, C);
-
-		stateVector = calculateAdjustedStateVector(stateVector, kalmanGain, measurementVector, C);
-
-		covarianceMatrix = calculateAdjustedCovarianceMatrix(C, kalmanGain, covarianceMatrix);
-
-		predictedPositions.push_back(wxPoint(static_cast<int>(stateVector.at(0, 0)), static_cast<int>(stateVector.at(1, 0))));
+		predictedPositions.push_back(wxPoint(static_cast<int>(kalmanFilter.getStateVector().at(0, 0)), static_cast<int>(kalmanFilter.getStateVector().at(1, 0))));
 	}
 } // namespace Model
