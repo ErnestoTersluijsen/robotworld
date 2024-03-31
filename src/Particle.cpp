@@ -12,7 +12,8 @@
 namespace Model
 {
 	Particle::Particle(wxPoint point) :
-			location(point)
+			location(point),
+			weight(0)
 	{
 		generatePointCloud();
 	}

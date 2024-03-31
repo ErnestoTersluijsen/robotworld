@@ -22,7 +22,7 @@ namespace Model
 
 	OdometerCompasSensor::OdometerCompasSensor(Robot& aRobot) : AbstractSensor( aRobot)
 	{
-		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		const Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
 		OdometerCompasSensor::compasStddev = mainSettings.getCompasStddev();
 		OdometerCompasSensor::odometerStddev = mainSettings.getOdometerStddev();
 	}

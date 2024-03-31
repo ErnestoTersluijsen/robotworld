@@ -20,11 +20,11 @@ namespace Model
 	public:
 		explicit ParticleFilter(int amountOfParticles);
 
-		void update(PointCloud pc, wxPoint movement);
+		void update(const PointCloud& pc, wxPoint movement);
 
 		void controlUpdate(wxPoint movement, double amountOfNoise);
 
-		void measurementUpdate(PointCloud pc);
+		void measurementUpdate(const PointCloud& pc);
 
 		void resample();
 

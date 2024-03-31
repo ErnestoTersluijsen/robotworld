@@ -267,7 +267,7 @@ namespace View
 
 	void RobotShape::drawLiDAR( wxDC& dc)
 	{
-		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		const Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
 		if(mainSettings.getUseParticleFilter())
 		{
 			// Draw the radar endPoints that are actually touching the walls
@@ -290,7 +290,7 @@ namespace View
 
 	void RobotShape::drawKalman( wxDC& dc)
 	{
-		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		const Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
 		if(mainSettings.getUseKalmanFilter())
 		{
 			for (unsigned long int i = 1; i < getRobot()->getPredictedPositions().size(); ++i)

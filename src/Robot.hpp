@@ -132,7 +132,7 @@ namespace Model
 				return lidarPointCloud;
 			}
 
-			void setLidarPointCloud(PointCloud pc)
+			void setLidarPointCloud(const PointCloud& pc)
 			{
 				lidarPointCloud = pc;
 			}
@@ -142,7 +142,7 @@ namespace Model
 				return particleFilter;
 			}
 
-			void setParticleFilter(ParticleFilter pf)
+			void setParticleFilter(const ParticleFilter& pf)
 			{
 				particleFilter = pf;
 			}

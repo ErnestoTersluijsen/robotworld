@@ -517,7 +517,6 @@ namespace Model
 								{
 									predictPositionKalman(deltaX, deltaY);
 								}
-								// TODO: reset predicted positions array when stopping robot and reset previousDeltaX & Y to 0
 
 								previousDeltaX = deltaX;
 								previousDeltaY = deltaY;
@@ -651,7 +650,6 @@ namespace Model
 		Matrix<double, 2, 2> B { { 1.0, 0.0 }, { 0.0, 1.0 } };
 		Matrix<double, 2, 2> C { { 1.0, 0.0 }, { 0.0, 1.0 } };
 
-		// previous deltaX and deltaY
 		Matrix<double, 2, 1> update { { {previousDeltaX} }, { {previousDeltaY} } };
 		Matrix<double, 2, 2> Q { { 1.0, 0.0 }, { 0.0, 1.0 } };
 

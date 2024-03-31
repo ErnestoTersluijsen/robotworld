@@ -33,7 +33,7 @@ namespace Model
 		}
 	}
 
-	void ParticleFilter::update(PointCloud pc, wxPoint movement)
+	void ParticleFilter::update(const PointCloud& pc, wxPoint movement)
 	{
 		controlUpdate(movement, 2);
 		measurementUpdate(pc);
@@ -53,7 +53,7 @@ namespace Model
 		}
 	}
 
-	void ParticleFilter::measurementUpdate(PointCloud pc)
+	void ParticleFilter::measurementUpdate(const PointCloud& pc)
 	{
 		for(Particle& particle : particles)
 		{
