@@ -69,6 +69,8 @@ namespace Application
 			 */
 			wxPanel* initialiseButtonPanel();
 
+			wxPanel* initialiseLocalisationPanel();
+
 		protected:
 
 		private:
@@ -92,6 +94,10 @@ namespace Application
 
 			wxPanel* buttonPanel;
 
+			wxPanel* localisationPanel;
+			wxCheckBox* kalmanFilterCheckbox;
+			wxCheckBox* particleFilterCheckbox;
+
 			void OnQuit( wxCommandEvent& anEvent);
 			void OnWidgetTraceFunction( wxCommandEvent& anEvent);
 			void OnStdOutTraceFunction( wxCommandEvent& anEvent);
@@ -111,6 +117,9 @@ namespace Application
 			void OnStartListening( wxCommandEvent& anEvent);
 			void OnSendMessage( wxCommandEvent& anEvent);
 			void OnStopListening( wxCommandEvent& anEvent);
+
+			void OnKalmanFilterCheckbox( wxCommandEvent& anEvent);
+			void OnParticleFilterCheckbox( wxCommandEvent& anEvent);
 
 			/**
 			 * Draws the grid for the given panel. Useful for debugging the layout of the grid.

@@ -5,7 +5,7 @@ namespace Application
 	/**
 	 *
 	 */
-	MainSettings::MainSettings() : drawOpenSet(true), speed(10), worldNumber(0)
+	MainSettings::MainSettings() : drawOpenSet(true), speed(10), worldNumber(0), useKalmanFilter(false), useParticleFilter(false)
 	{
 	}
 	/**
@@ -55,5 +55,25 @@ namespace Application
 	void MainSettings::setWorldNumber( unsigned long aWorldNumber)
 	{
 		worldNumber = aWorldNumber;
+	}
+
+	bool MainSettings::getUseKalmanFilter() const
+	{
+		return useKalmanFilter;
+	}
+
+	void MainSettings::setUseKalmanFilter( bool aUseKalmanFilter)
+	{
+		useKalmanFilter = aUseKalmanFilter;
+	}
+
+	bool MainSettings::getUseParticleFilter() const
+	{
+		return useParticleFilter;
+	}
+
+	void MainSettings::setUseParticleFilter( bool aUseParticleFilter)
+	{
+		useParticleFilter = aUseParticleFilter;
 	}
 } /* namespace Application */

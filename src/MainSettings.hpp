@@ -45,10 +45,22 @@ namespace Application
 			 */
 			void setWorldNumber( unsigned long aWorldNumber);
 
+
+			bool getUseKalmanFilter() const;
+
+			void setUseKalmanFilter( bool aUseKalmanFilter);
+
+			bool getUseParticleFilter() const;
+
+			void setUseParticleFilter( bool aUseKalmanFilter);
+
 		private:
 			bool drawOpenSet;
 			unsigned long speed;
 			unsigned long worldNumber;
+
+			bool useKalmanFilter;
+			bool useParticleFilter;
 	};
 
 } /* namespace Application */

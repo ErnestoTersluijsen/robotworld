@@ -56,7 +56,10 @@ namespace Application
 																drawOpenSetCheckbox(nullptr),
 																speedSpinCtrl(nullptr),
 																worldNumber(nullptr),
-																buttonPanel( nullptr)
+																buttonPanel( nullptr),
+																localisationPanel(nullptr),
+																kalmanFilterCheckbox(nullptr),
+																particleFilterCheckbox(nullptr)
 	{
 		initialise();
 	}
@@ -228,13 +231,17 @@ namespace Application
 					wxGBPosition( 6, 1),
 					wxGBSpan( 1, 1),
 					wxGROW);
+		sizer->Add(	localisationPanel = initialiseLocalisationPanel(),
+					wxGBPosition( 8, 1),
+					wxGBSpan( 1, 1),
+					wxGROW);
 		sizer->AddGrowableCol( 1);
 
 		sizer->Add( 5, 5,
-					wxGBPosition( 7, 2),
+					wxGBPosition( 9, 2),
 					wxGBSpan( 1, 1),
 					wxGROW);
-		sizer->AddGrowableRow( 7);
+		sizer->AddGrowableRow( 9);
 
 
 		rhsPanel->SetSizer( sizer);
@@ -511,6 +518,49 @@ namespace Application
 
 		return panel;
 	}
+
+	wxPanel* MainFrameWindow::initialiseLocalisationPanel()
+	{
+		wxPanel* panel = new wxPanel( rhsPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER);
+
+		wxGridBagSizer* sizer = new wxGridBagSizer();
+
+		sizer->Add( 5, 5,
+					wxGBPosition( 0, 0),
+					wxGBSpan( 1, 1),
+					wxGROW);
+		sizer->AddGrowableCol( 0);
+
+		sizer->Add( kalmanFilterCheckbox = Application::makeCheckbox(	panel,
+																		"Show Kalman filter",
+																		[this]( wxCommandEvent& event){this-> OnKalmanFilterCheckbox(event);}),
+							wxGBPosition( 1, 1),
+							wxGBSpan( 1, 1),
+							wxSHRINK | wxALIGN_CENTRE);
+
+		sizer->Add( particleFilterCheckbox = Application::makeCheckbox(	panel,
+																		"Show particle filter",
+																		[this]( wxCommandEvent& event){this-> OnParticleFilterCheckbox(event);}),
+							wxGBPosition( 1, 2),
+							wxGBSpan( 1, 1),
+							wxSHRINK | wxALIGN_CENTRE);
+
+		sizer->Add( 5, 5,
+					wxGBPosition( 2, 4),
+					wxGBSpan( 1, 1),
+					wxGROW);
+		sizer->AddGrowableCol( 4);
+
+		panel->SetSizerAndFit( sizer);
+
+		if(MainApplication::isArgGiven("-debug_grid"))
+		{
+			showGridFor(panel,sizer);
+		}
+
+		return panel;
+	}
+
 	/**
 	 *
 	 */
@@ -755,6 +805,19 @@ namespace Application
 			robot->stopCommunicating();
 		}
 	}
+
+	void MainFrameWindow::OnKalmanFilterCheckbox( wxCommandEvent& UNUSEDPARAM(anEvent))
+	{
+		MainSettings& mainSettings = MainApplication::getSettings();
+		mainSettings.setUseKalmanFilter(kalmanFilterCheckbox->GetValue());
+	};
+
+	void MainFrameWindow::OnParticleFilterCheckbox( wxCommandEvent& UNUSEDPARAM(anEvent))
+	{
+		MainSettings& mainSettings = MainApplication::getSettings();
+		mainSettings.setUseParticleFilter(particleFilterCheckbox->GetValue());
+	};
+
 	/**
 	 *
 	 */

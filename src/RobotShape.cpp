@@ -4,6 +4,7 @@
 #include "LaserDistanceSensor.hpp"
 #include "Logger.hpp"
 #include "MainApplication.hpp"
+#include "MainSettings.hpp"
 #include "Notifier.hpp"
 #include "Robot.hpp"
 #include "RobotWorld.hpp"
@@ -94,7 +95,9 @@ namespace View
 
 		drawLaser( dc);
 
-		drawLiDAR(dc);
+		drawKalman( dc);
+
+		drawLiDAR( dc);
 	}
 	/**
 	 *
@@ -261,28 +264,40 @@ namespace View
 				dc.DrawCircle( d.point, 1);
 			}
 		}
-
-		for (unsigned long int i = 1; i < getRobot()->getPredictedPositions().size(); ++i)
-		{
-			dc.SetPen( wxPen(  "CYAN", borderWidth, wxPENSTYLE_SOLID));
-			dc.DrawLine(getRobot()->getPredictedPositions().at(i - 1), getRobot()->getPredictedPositions().at(i));
-		}
-		for(auto particle : getRobot()->getParticleFilter().getParticles())
-		{
-			dc.SetPen( wxPen(  "BLUE", borderWidth, wxPENSTYLE_SOLID));
-			dc.DrawCircle( particle.getLocation(), 1);
-		}
 	}
 
 	void RobotShape::drawLiDAR( wxDC& dc)
 	{
-		// Draw the radar endPoints that are actually touching the walls
-		for (const Model::DistancePercept &d : getRobot()->getLidarPointCloud())
+		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		if(mainSettings.getUseParticleFilter())
 		{
-			if (d.point != wxDefaultPosition || (d.point.x != Model::noObject && d.point.y != Model::noObject))
+			// Draw the radar endPoints that are actually touching the walls
+			for (const Model::DistancePercept &d : getRobot()->getLidarPointCloud())
 			{
-				dc.SetPen( wxPen(  "YELLOW", borderWidth, wxPENSTYLE_SOLID));
-				dc.DrawLine( centre.x, centre.y, centre.x + d.point.x, centre.y + d.point.y);
+				if (d.point != wxDefaultPosition || (d.point.x != Model::noObject && d.point.y != Model::noObject))
+				{
+					dc.SetPen( wxPen(  "YELLOW", borderWidth, wxPENSTYLE_SOLID));
+					dc.DrawLine( centre.x, centre.y, centre.x + d.point.x, centre.y + d.point.y);
+				}
+			}
+
+			for(auto particle : getRobot()->getParticleFilter().getParticles())
+			{
+				dc.SetPen( wxPen(  "BLUE", borderWidth, wxPENSTYLE_SOLID));
+				dc.DrawCircle( particle.getLocation(), 1);
+			}
+		}
+	}
+
+	void RobotShape::drawKalman( wxDC& dc)
+	{
+		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		if(mainSettings.getUseKalmanFilter())
+		{
+			for (unsigned long int i = 1; i < getRobot()->getPredictedPositions().size(); ++i)
+			{
+				dc.SetPen( wxPen(  "CYAN", borderWidth, wxPENSTYLE_SOLID));
+				dc.DrawLine(getRobot()->getPredictedPositions().at(i - 1), getRobot()->getPredictedPositions().at(i));
 			}
 		}
 	}

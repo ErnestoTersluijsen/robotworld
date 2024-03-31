@@ -393,10 +393,6 @@ namespace Model
 
 			KalmanFilter kalmanFilter;
 
-//			Matrix<double, 2, 1> stateVector;
-//
-//			Matrix<double, 2, 2> covarianceMatrix;
-
 			std::vector<wxPoint> predictedPositions;
 
 			double previousDeltaX;
