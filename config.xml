@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+  <compas>
+    <stddev>2.0</stddev>
+  </compas>
+  <odometer>
+    <stddev>0.1</stddev>
+  </odometer>
+  <LiDAR>
+    <stddev>10.0</stddev>
+  </LiDAR>
+</root>

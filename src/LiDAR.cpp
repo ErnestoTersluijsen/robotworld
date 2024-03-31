@@ -8,6 +8,7 @@
 #include "LiDAR.hpp"
 
 #include "Logger.hpp"
+#include "MainApplication.hpp"
 #include "Robot.hpp"
 #include "RobotWorld.hpp"
 #include "Wall.hpp"
@@ -34,6 +35,8 @@ namespace Model
 	LiDAR::LiDAR(Robot& aRobot) :
 		AbstractSensor( aRobot)
 	{
+		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		LiDAR::stddev = mainSettings.getLidarStddev();
 	}
 	/**
 	 *

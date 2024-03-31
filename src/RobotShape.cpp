@@ -4,7 +4,6 @@
 #include "LaserDistanceSensor.hpp"
 #include "Logger.hpp"
 #include "MainApplication.hpp"
-#include "MainSettings.hpp"
 #include "Notifier.hpp"
 #include "Robot.hpp"
 #include "RobotWorld.hpp"

@@ -3,6 +3,8 @@
 
 #include "Config.hpp"
 
+#include <string>
+
 namespace Application
 {
 
@@ -20,6 +22,9 @@ namespace Application
 			 *
 			 */
 			virtual ~MainSettings();
+
+			void readConfig(const std::string& filename);
+
 			/**
 			 *
 			 */
@@ -54,6 +59,18 @@ namespace Application
 
 			void setUseParticleFilter( bool aUseKalmanFilter);
 
+			double getCompasStddev() const;
+
+			void setCompasStddev(double aCompasStddev);
+
+			double getLidarStddev() const;
+
+			void setLidarStddev(double aLidarStddev);
+
+			double getOdometerStddev() const;
+
+			void setOdometerStddev(double anOdometerStddev);
+
 		private:
 			bool drawOpenSet;
 			unsigned long speed;
@@ -61,6 +78,11 @@ namespace Application
 
 			bool useKalmanFilter;
 			bool useParticleFilter;
+
+			double compasStddev;
+			double odometerStddev;
+
+			double lidarStddev;
 	};
 
 } /* namespace Application */

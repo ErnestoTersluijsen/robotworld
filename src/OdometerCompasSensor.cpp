@@ -8,6 +8,7 @@
 #include "OdometerCompasSensor.hpp"
 
 #include "DistanceAnglePercept.hpp"
+#include "MainApplication.hpp"
 #include "Robot.hpp"
 #include "Shape2DUtils.hpp"
 #include "MathUtils.hpp"
@@ -21,6 +22,9 @@ namespace Model
 
 	OdometerCompasSensor::OdometerCompasSensor(Robot& aRobot) : AbstractSensor( aRobot)
 	{
+		Application::MainSettings& mainSettings = Application::MainApplication::getSettings();
+		OdometerCompasSensor::compasStddev = mainSettings.getCompasStddev();
+		OdometerCompasSensor::odometerStddev = mainSettings.getOdometerStddev();
 	}
 
 	std::shared_ptr< AbstractStimulus > OdometerCompasSensor::getStimulus() const
