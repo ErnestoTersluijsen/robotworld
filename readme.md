@@ -3,6 +3,16 @@ RobotWorld building and using (readme)
 
 This readme contains several sections. Please read them. It makes your life easier. Really. 
 
+Config file
+-------------------------
+
+The config file is loaded from the current working directory. If you run robotworld through Eclipse you shouldn't notice anything.
+
+If you want to launch the program through the terminal make sure the root of the project is your CWR. The launch command is as follows `./linux/src/robotworld`.
+
+The config file is named `config.xml` in the project root.
+
+
 RobotWorld is an example!
 -------------------------
 
